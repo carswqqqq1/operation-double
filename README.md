@@ -117,6 +117,27 @@ None at $75. If opens pay nothing, cash is the book.
 - Paper sells only when he has printed a sell, or when the same-minute bid is above paper cost. Do not invent a sell he did not make, and do not carry the position into the next minute.
 - Real $37.40 stays off. Live only when a paper book has $75 cash from repeatable fills, not from one resolution.
 
+## Paper simulator
+
+Two paper books copy @bosona's public Bitcoin up/down prints. Each book starts at $37.40. The goal is still $75 cash from repeatable fills. Real money stays off. This simulator does not place an order, hold a private key, or run a loop.
+
+1. `books/same_minute.json`. Exact copy, then sell that position in the same minute only if the bid is above paper cost. If the minute ends without that bid, the shares leave the book with no sale proceeds and no resolution payout. They are not carried into the next minute. This is the only exit that booked a small gain. It is not proven to $75.
+2. `books/hold_to_resolution.json`. Control. Exact copy, then hold to resolution, so the measured failure that locked $50.17042572333333333333333333 and then fell to $14.23842572333333333333333333 stays visible. It is not a candidate.
+
+A copy is his exact share count, the same side, the same market, his price or better, and only shares the public book is offering. The decision log records his transaction hash and the latency from his print to the decision. The copy is skipped when that exact size is not offered at his price or better, or when cash cannot cover it. Size is not scaled. A fill is not invented. A sell is copied only when he printed that sell. The same-minute exit is the only other sell.
+
+The fee on every fill is `shares × 0.07 × price × (1 − price)`. Buys pay it in shares. Sells pay it in USDC. Resolutions have no fee.
+
+These failed rules are not books: selling in any minute, skip-over-60 as a standalone edge, half-cash sizing, five-share slices that are not his size, copying at a worse price, and counting an unmarked open position as a gain. Open cost is the cost of shares still held. It is not added to cash. Realized is `cash + open cost − 37.40`, which keeps an open position at cost. If opens pay nothing, cash is the book.
+
+From the repository root, one shot:
+
+```bash
+python3 -m paper
+```
+
+That command sends read-only HTTPS GETs to the public trades, book, and event endpoints, then writes `books/same_minute.json`, `books/hold_to_resolution.json`, and `runs/<UTC timestamp>.json`. Each record stores cash, realized, fees, open cost, copies, skips, and latency. It exits. It does not place a live order.
+
 ## Scope
 
-This repository records the measured paper results and the rules above. It does not place orders, hold a private key, open a live-order path, or run a trading loop.
+The measured results above are a record, not a promise. The simulator is the paper path. Live orders stay out until a paper book has $75 cash from repeatable fills, not from one resolution.
