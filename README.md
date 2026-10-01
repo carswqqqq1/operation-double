@@ -138,6 +138,11 @@ python3 -m paper
 
 That command sends read-only HTTPS GETs to the public trades, book, and event endpoints, then writes `books/same_minute.json`, `books/hold_to_resolution.json`, and `runs/<UTC timestamp>.json`. Each record stores cash, realized, fees, open cost, copies, skips, and latency. It exits. It does not place a live order.
 
+The first one-shot, `runs/20261001T220006Z.json`, is a measured record of that pass. It is not a promise.
+
+- `same_minute`: cash 37.40, realized 0.00, fees 0, open cost 0, copies 0, skips 50. Latency milliseconds: count 50, min 178625, max 10455625, last 178625. Skips were 43 `minute_elapsed` and 7 `not_bitcoin_up_down`.
+- `hold_to_resolution`: cash 35.5213, realized 0.0000, fees 0.13019391, open cost 1.8787, copies 2, skips 48. Latency milliseconds: count 50, min 178625, max 10455625, last 178625. The two copies were displayed asks at 0.01, better than his prices, on `btc-updown-5m-1790891700` (`0x1361c2aa84c68bd9b4a8b64c3a8fcbb2f2e9607f9a21f255dd9562d71182f825` and `0x9cf57f1e0af430fd97225724b02f323abc10c6656b4989ac8d2ec7beba078a92`). Open cost is still cost, not cash. Skips were 38 `book_unreadable`, 7 `not_bitcoin_up_down`, and 3 `latency_worse_than_leader_price`.
+
 ## Scope
 
 The measured results above are a record, not a promise. The simulator is the paper path. Live orders stay out until a paper book has $75 cash from repeatable fills, not from one resolution.
