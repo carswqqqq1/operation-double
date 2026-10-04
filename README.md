@@ -38,6 +38,35 @@ That prints cash, fees, open cost, and skips for each book, then `paper only; no
 
 `python3 -m paper` is the older one-shot Bitcoin copy. It also places no order. It is not these temperature books, and running it rewrites `books/*.json`. Leave that record alone.
 
+### One measured run (2026-10-04)
+
+This is the print from one `python3 -m weather_paper` run. It is a record of that pass. It is not a promise.
+
+```text
+tokyo cash=39.30 fees=0.03010 open_cost=0.70 skips=5
+nyc cash=33.20 fees=0.18500 open_cost=6.80 skips=2
+london cash=35.45 fees=0.14088 open_cost=4.55 skips=3
+paris cash=39.00 fees=0.04000 open_cost=1.0 skips=5
+seoul cash=37.50 fees=0.06250 open_cost=2.5 skips=5
+chicago cash=39.35 fees=0.02828 open_cost=0.65 skips=5
+miami cash=31.45 fees=0.17928 open_cost=8.55 skips=1
+los-angeles cash=38.25 fees=0.05688 open_cost=1.75 skips=5
+dallas cash=36.60 fees=0.05440 open_cost=3.40 skips=5
+seattle cash=35.25 fees=0.16104 open_cost=4.75 skips=3
+atlanta cash=39.15 fees=0.03528 open_cost=0.85 skips=3
+toronto cash=39.25 fees=0.03188 open_cost=0.75 skips=3
+madrid cash=33.25 fees=0.10968 open_cost=6.75 skips=4
+shanghai cash=39.30 fees=0.03010 open_cost=0.70 skips=5
+beijing cash=35.90 fees=0.11970 open_cost=4.10 skips=4
+taipei cash=34.85 fees=0.16898 open_cost=5.15 skips=3
+munich cash=36.60 fees=0.11220 open_cost=3.40 skips=4
+wellington cash=35.10 fees=0.11776 open_cost=4.90 skips=4
+singapore cash=35.55 fees=0.11988 open_cost=4.45 skips=1
+austin cash=35.975 fees=0.08447 open_cost=4.025 skips=4
+```
+
+Thirty-six paper buys were taken, all at the book's 5-share minimum, all with an ask from 0.10 up to but not including 0.99. Cash plus open cost is still $40 on every book, because the weather fee was taken in shares. On every fill, the second book read still showed the same ask; none of those orders had moved against the book during the one-second wait. Skips included cheap tails, a near-certain ask, no edge after the fee, an ambiguous forecast, a missing forecast date, and a book that did not offer the minimum. The ledgers for this pass are in gitignored `data/weather/books/`. They are not in git.
+
 ### Data layout
 
 Paper state, market snapshots, and new downloads go in `data/`, which is gitignored. Do not commit trade dumps.
