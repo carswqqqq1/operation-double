@@ -99,6 +99,41 @@ Cash above the $40 the current rule started with is a working rule. That bot is 
 
 `data/bots/SUMMARY.txt` is the latest print of each bot's rule, section, cash, fees, open cost, and skips. The process stops on its own at 8:00 AM Phoenix.
 
+### Stopped at 8:00 AM Phoenix (2026-10-04)
+
+The A/B process stopped itself at 15:00 UTC. No live order was sent. No bot's current rule finished above the $40 it started with, so none was left as a working rule. Open cost is cash already spent. If those shares pay nothing, cash is the book.
+
+The highest cash was `b09` on `one_open`: one fill, cash 39.35, fees 0.02828, open cost 0.65, 1 skip. That is the most cash left, not a realized profit.
+
+```text
+stopped 2026-10-04T15:00:17+00:00
+best b09 one_open cash=39.35
+b01 rule=modal_hold section=1 cash=32.25 fees=0.26264 open_cost=7.75 skips=0 fills=6 sells=0
+b02 rule=edge_08 section=1 cash=33.45 fees=0.25624 open_cost=6.05 skips=3 fills=7 sells=0
+b03 rule=edge_15 section=1 cash=32.35 fees=0.28374 open_cost=7.15 skips=4 fills=7 sells=0
+b04 rule=band_20_60 section=1 cash=27.75 fees=0.37054 open_cost=10.90 skips=2 fills=7 sells=0
+b05 rule=band_30_50 section=1 cash=28.75 fees=0.34264 open_cost=11.25 skips=5 fills=6 sells=0
+b06 rule=day_ahead section=1 cash=30.50 fees=0.29690 open_cost=9.50 skips=6 fills=6 sells=0
+b07 rule=exit_above_cost_tight_s2 section=2 cash=33.7616 fees=0.23394 open_cost=6.2384 skips=235 fills=6 sells=0
+b08 rule=exit_plus_5c_tight_s2 section=2 cash=32.04208647058823529411764706 fees=0.40222 open_cost=8.3888 skips=0 fills=7 sells=1
+b09 rule=one_open section=1 cash=39.35 fees=0.02828 open_cost=0.65 skips=1 fills=1 sells=0
+b10 rule=two_open section=1 cash=38.60 fees=0.06016 open_cost=1.40 skips=1 fills=2 sells=0
+b11 rule=largest_gap section=1 cash=32.30 fees=0.29792 open_cost=5.85 skips=8 fills=8 sells=0
+b12 rule=high_only section=1 cash=34.10 fees=0.22846 open_cost=5.90 skips=9 fills=6 sells=0
+b13 rule=low_only section=1 cash=21.90 fees=0.40582 open_cost=16.25 skips=2 fills=8 sells=0
+b14 rule=liquid_hubs section=1 cash=29.60 fees=0.29632 open_cost=10.40 skips=3 fills=6 sells=0
+b15 rule=tight_spread section=1 cash=30.65 fees=0.29404 open_cost=9.35 skips=2 fills=6 sells=0
+b16 rule=fahrenheit_only section=1 cash=31.15 fees=0.29034 open_cost=8.35 skips=0 fills=7 sells=0
+b17 rule=celsius_only section=1 cash=31.15 fees=0.28698 open_cost=8.85 skips=11 fills=6 sells=0
+b18 rule=strong_mode section=1 cash=33.55 fees=0.25254 open_cost=5.95 skips=9 fills=7 sells=0
+b19 rule=rally_tight_s2_tight_s3 section=3 cash=34.8314 fees=0.21182 open_cost=5.1686 skips=0 fills=6 sells=0
+b20 rule=market_agrees section=1 cash=22.55 fees=0.33854 open_cost=17.45 skips=6 fills=6 sells=0
+```
+
+Buys paid the published 0.05 fee in shares. The one sell on the current `b08` section paid its fee in USDC. Resolutions paid no fee. Every fill had a first price and a second price. A price the second book did not show was not used.
+
+Closed trades that paid 0, with no fee, were Los Angeles on `edge_08`, `edge_15`, `largest_gap`, `low_only`, `fahrenheit_only`, and `strong_mode`, and Seattle on `band_20_60`, `largest_gap`, and `low_only`. The first `exit_above_cost` section on `b07` also had a Los Angeles resolution at 0, after two sells whose proceeds cleared their cost. That section ended at about 29.49, under $40. No other bot was above $40, so `b07`, `b08`, and `b19` were each reset to a fresh $40 section on a tighter rule. The old lines stayed in the bot file and a copy was written under `data/bots/archive/`. Those new sections are the ones in the list above. `one_open` was not reset.
+
 ## Earlier Bitcoin copy record
 
 Starting strategy for paper copies of @bosona on Polymarket Bitcoin up/down markets. Every figure in this document is a measured result from 2026-10-01. These results are a record. They are not a promise that a future book reaches the goal. The sentences below about going live are that old plan. They do not place an order, and the weather books do not use them.
