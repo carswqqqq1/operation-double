@@ -87,6 +87,18 @@ Line types:
 
 A repeated decision id does not apply twice. Cash, fees, open cost, and skip counts are rebuilt from these lines.
 
+## A/B paper bots
+
+`python3 -m weather_paper.ab` runs 20 paper bots until 8:00 AM America/Phoenix on October 4, 2026, then stops. `--once` runs a single pass. It sends the same read-only GETs as the city books. It does not place a live order.
+
+Each bot starts at $40 and writes `data/bots/b01.jsonl` through `data/bots/b20.jsonl`. Those files are append-only and gitignored. A restart replays the current section and continues. The bots use different rules: edge size, price band, day-ahead dates, take-profit, open-position caps, high or low markets, Celsius or Fahrenheit, a few liquid cities, spread, and whether the market's ask agrees with the ensemble mode.
+
+A buy is still not the first price. The command waits, reads the book again, and takes shares only when that second book still offers them at the first ask or better. One displayed size is used once. A second bot does not fill the same shares. The line records the fee rate, the USDC fee, and `fee_asset`. Buys pay the fee in shares. Sells pay it in USDC. Resolutions pay no fee. A weather market uses its published `feeSchedule.rate`, otherwise 0.05.
+
+Cash above the $40 the current rule started with is a working rule. That bot is not reset. A rule that has lost at least $1 after a closed trade, or at least $2 on a real bid that can actually sell the minimum, is replaced. The file is copied to `data/bots/archive/` first. The old lines stay in the bot file. A new section then starts at $40 so the new rule is scored on its own. The replacement is a tighter rule, or a variant of a bot that is already above $40.
+
+`data/bots/SUMMARY.txt` is the latest print of each bot's rule, section, cash, fees, open cost, and skips. The process stops on its own at 8:00 AM Phoenix.
+
 ## Earlier Bitcoin copy record
 
 Starting strategy for paper copies of @bosona on Polymarket Bitcoin up/down markets. Every figure in this document is a measured result from 2026-10-01. These results are a record. They are not a promise that a future book reaches the goal. The sentences below about going live are that old plan. They do not place an order, and the weather books do not use them.
